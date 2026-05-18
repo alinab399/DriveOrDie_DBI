@@ -55,6 +55,35 @@ Das System verwaltet:
 ## RM Diagramm
 ![alt text](RM.png)
 
+**1NF**
+- Alle Tabellen besitzen:
+  - eindeutige Primärschlüssel
+  - atomare Werte
+  - keine mehrfachen Werte in einer Spalte
+
+Erfüllt.
+
+
+
+**2NF**
+- Alle Nicht-Schlüsselattribute hängen vollständig vom Primärschlüssel ab.
+- Keine Teilabhängigkeiten vorhanden.
+
+Erfüllt.
+
+
+**3NF**
+- Keine transitiven Abhängigkeiten vorhanden.
+
+- Daten sind logisch getrennt:
+  - Benutzer
+  - Fragen
+  - Antworten
+  - Logging
+  - Scores
+
+Erfüllt.
+
 ### Must-Haves
 POS:
 - Main-Page
