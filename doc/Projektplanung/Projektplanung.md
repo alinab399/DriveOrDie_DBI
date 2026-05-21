@@ -4,6 +4,10 @@ Team
 - Alina
 - Franziska
 
+GitHub-Links:
+- POS: https://github.com/alinab399/DriveOrDie_POS
+- DBI: https://github.com/alinab399/DriveOrDie_DBI
+
 ## Projektbeschreibung
 Wir entwickeln ein Lernspiel für Fahrschüler mit WPF, FastAPI und einer Datenbank.
 
@@ -29,7 +33,6 @@ Das System verwaltet:
 - Benutzer
 - Theoriefragen
 - Praxisfragen
-
 - Antworten
 - Punkte
 - Leaderboard
@@ -55,6 +58,7 @@ Das System verwaltet:
 
 ## RM Diagramm
 ![alt text](RM.png)
+
 
 **1NF**
 - Alle Tabellen besitzen:
@@ -139,7 +143,7 @@ DBI:
 
 
 
-# Nach der Zwischenpräsentation
+## Nach der Zwischenpräsentation
 
 | Zeitraum | Aufgabe | Zuständig | Milestone |
 |---|---|---|---|
