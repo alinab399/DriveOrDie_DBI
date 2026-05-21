@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
+from sqlalchemy.dialects.mysql import VARCHAR
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -8,8 +9,8 @@ class DBUser(Base):
     __tablename__ = "user"
 
     user_id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(50), nullable=False, unique=True)
-    password = Column(String(15), nullable=False)
+    username = Column(VARCHAR(50), nullable=False, unique=True)
+    password = Column(VARCHAR(15), nullable=False)
     is_admin = Column(Boolean, default=False)
 
     scores = relationship("DBScore", back_populates="user")
