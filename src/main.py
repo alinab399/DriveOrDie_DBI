@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 import uvicorn
 from database import engine
 import models
-from routers.user import router as user_router
+# from routers.user import router as user_router
 
 app = FastAPI(
     title="Drive or Die",
@@ -12,7 +12,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-app.include_router(user_router)
+# app.include_router(user_router)
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):

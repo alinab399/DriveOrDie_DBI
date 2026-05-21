@@ -23,7 +23,7 @@ class DBScore(Base):
     score_id = Column(Integer, primary_key=True, index=True)
     points = Column(Integer, nullable=False)
 
-    user_id = Column(Integer, ForeignKey("users.user_id"))
+    user_id = Column(Integer, ForeignKey("user.user_id"))
 
     user = relationship("DBUser", back_populates="scores")
 
@@ -35,7 +35,7 @@ class DBLogging(Base):
     action = Column(String, nullable=False)
     timestamp = Column(DateTime, nullable=False)
 
-    user_id = Column(Integer, ForeignKey("users.user_id"))
+    user_id = Column(Integer, ForeignKey("user.user_id"))
 
     user = relationship("DBUser", back_populates="logs")
 
@@ -59,7 +59,7 @@ class DBAnswer(Base):
     answer_text = Column(String, nullable=False)
     is_correct = Column(Boolean, default=False)
 
-    question_id = Column(Integer, ForeignKey("questions.question_id"))
+    question_id = Column(Integer, ForeignKey("question.question_id"))
 
     question = relationship("DBQuestion", back_populates="answers")
 
@@ -69,8 +69,8 @@ class DBUserQuestion(Base):
 
     uq_id = Column(Integer, primary_key=True, index=True)
 
-    user_id = Column(Integer, ForeignKey("users.user_id"))
-    question_id = Column(Integer, ForeignKey("questions.question_id"))
+    user_id = Column(Integer, ForeignKey("user.user_id"))
+    question_id = Column(Integer, ForeignKey("question.question_id"))
 
     user = relationship("DBUser", back_populates="user_questions")
     question = relationship("DBQuestion", back_populates="user_questions")
