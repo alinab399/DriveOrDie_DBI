@@ -4,15 +4,22 @@ from fastapi.responses import JSONResponse
 import uvicorn
 from database import engine
 import models
-# from routers.user import router as user_router
-
+from routers.user import router as user_router
+from routers.question import router as question_router
+from routers.answer import router as answer_router
+from routers.score import router as score_router
+from routers.logging import router as logging_router
 app = FastAPI(
     title="Drive or Die",
     description="API Fahrschule",
     version="1.0.0"
 )
 
-# app.include_router(user_router)
+app.include_router(user_router)
+app.include_router(question_router)
+app.include_router(answer_router)
+app.include_router(score_router)
+app.include_router(logging_router)
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
