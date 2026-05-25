@@ -11,6 +11,11 @@ class UserSchema(BaseModel):
     password: str
 
 
+class LoginSchema(BaseModel):
+    username: str
+    password: str
+
+
 class UserAPI:
     def __init__(self):
         self.router = APIRouter(
@@ -35,6 +40,10 @@ class UserAPI:
 
         self.router.add_api_route(
             "/{user_id}", self.delete_user, methods=["DELETE"]
+        )
+
+        self.router.add_api_route(
+            "/login", self.login_user, methods=["POST"]
         )
 
     def get_all_users(self, db: Session = Depends(get_db)):
@@ -92,6 +101,29 @@ class UserAPI:
         db.commit()
 
         return {"message": "User gelöscht"}
+
+    def login_user(
+        self,
+        login: LoginSchema,
+        db: Session = Depends(get_db)
+    ):
+
+        user = db.query(DBUser).filter(
+            DBUser.username == login.username,
+            DBUser.password == login.password
+        ).first()
+
+        if not user:
+            raise HTTPException(
+                status_code=401,
+                detail="Benutzername oder Passwort falsch"
+            )
+
+        return {
+            "message": "Login erfolgreich",
+            "user_id": user.user_id,
+            "username": user.username
+        }
 
 
 user_api = UserAPI()

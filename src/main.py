@@ -9,11 +9,16 @@ from routers.question import router as question_router
 from routers.answer import router as answer_router
 from routers.score import router as score_router
 from routers.logging import router as logging_router
+
+
+models.Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Drive or Die",
     description="API Fahrschule",
     version="1.0.0"
 )
+
+
 
 app.include_router(user_router)
 app.include_router(question_router)
