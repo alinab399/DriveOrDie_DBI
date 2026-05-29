@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi_restful.cbv import cbv
+from sqlalchemy import Null
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -32,6 +33,15 @@ class UserAPI:
 
     @router.post("/", response_model=UserSchema, status_code=201)
     def create_user(self, user: UserSchema):
+        existing_user = self.db.query(DBUser).filter(
+            DBUser.username == user.username
+        ).first()
+
+        if existing_user is not None:
+            raise HTTPException(
+                status_code=409,
+                detail="User existiert schon"
+            )
         new_user = DBUser(
             username=user.username,
             password=user.password
