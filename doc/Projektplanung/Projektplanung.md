@@ -136,8 +136,8 @@ DBI:
 | 20.05 – 23.05 | Login und Registrierung implementieren | Alina + Franziska| Login-System funktioniert |
 | 24.05 – 29.05 |  Theoriefragen erstellen | Alina | Theorie fertig |
 | 24.05 – 29.05 |  Praxisfragen erstellen | Franziska | Praxis fertig |
-| 24.05 – 29.05 | Theoriefragen aus Datenbank laden | Franziska | Theoriefragen dynamisch |
-| 24.05 – 29.05 | Praxisfragen aus Datenbank laden | Alina | Praxisfragen dynamisch |
+| 24.05 – 29.05 | Theoriefragen aus Datenbank laden | Alina | Theoriefragen dynamisch |
+| 24.05 – 29.05 | Praxisfragen aus Datenbank laden | Franziska | Praxisfragen dynamisch |
 |30.05 | Demo für Zwischenpräsentation fertigstellen | Franziska + Alina | Zwischenpräsentation bereit |
 | 31.05 | Funktionierende Zwischenpräsentation | Franziska + Alina | Zwischenpräsentation |
 
