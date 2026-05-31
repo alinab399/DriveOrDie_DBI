@@ -1,69 +1,99 @@
+from fastapi_restful.cbv import cbv
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
 from database import get_db
-from models import DBQuestion
+from models import DBQuestion, DBActionStep
+import random
 
+
+class ActionStepSchema(BaseModel):
+    text: str
+    correct_order: int
 
 class QuestionSchema(BaseModel):
     question_text: str
     question_type: str
     image_path: str | None = None
 
+    action_steps: list[ActionStepSchema] = []
 
+
+router = APIRouter(
+    prefix="/questions",
+    tags=["Questions"]
+)
+
+
+@cbv(router)
 class QuestionAPI:
-    def __init__(self):
-        self.router = APIRouter(
-            prefix="/questions",
-            tags=["Questions"]
-        )
+    db: Session = Depends(get_db)
 
-        self.register_routes()
+    @router.get("/")
+    def get_all_questions(self):
+        return self.db.query(DBQuestion).all()
 
-    def register_routes(self):
-        self.router.add_api_route(
-            "/", self.get_all_questions, methods=["GET"]
-        )
+    @router.get("/random")
+    def get_random_question(self):
+        questions = self.db.query(DBQuestion).all()
 
-        self.router.add_api_route(
-            "/", self.create_question, methods=["POST"]
-        )
+        if not questions:
+            raise HTTPException(
+                status_code=404,
+                detail="Keine Fragen vorhanden"
+            )
 
-        self.router.add_api_route(
-            "/{question_id}", self.get_question, methods=["GET"]
-        )
+        question = random.choice(questions)
 
-        self.router.add_api_route(
-            "/{question_id}", self.delete_question, methods=["DELETE"]
-        )
+        return {
+            "question_id": question.question_id,
+            "question_text": question.question_text,
+            "question_type": question.question_type,
+            "image_path": question.image_path,
 
-    def get_all_questions(self, db: Session = Depends(get_db)):
-        return db.query(DBQuestion).all()
+            "actions": [
+                {
+                    "id": step.actionstep_id,
+                    "text": step.text,
+                    "correctOrder": step.correct_order
+                }
+                for step in sorted(
+                    question.action_steps,
+                    key=lambda x: x.correct_order
+                )
+            ]
+        }
 
-    def create_question(
-        self,
-        question: QuestionSchema,
-        db: Session = Depends(get_db)
-    ):
+    @router.post("/", status_code=201)
+    def create_question(self, question: QuestionSchema):
+
         new_question = DBQuestion(
             question_text=question.question_text,
             question_type=question.question_type,
             image_path=question.image_path
         )
 
-        db.add(new_question)
-        db.commit()
-        db.refresh(new_question)
+        self.db.add(new_question)
+        self.db.commit()
+        self.db.refresh(new_question)
+
+        for step in question.action_steps:
+            self.db.add(
+                DBActionStep(
+                    question_id=new_question.question_id,
+                    text=step.text,
+                    correct_order=step.correct_order
+                )
+            )
+
+        self.db.commit()
 
         return new_question
 
-    def get_question(
-        self,
-        question_id: int,
-        db: Session = Depends(get_db)
-    ):
-        question = db.query(DBQuestion).filter(
+    @router.get("/{question_id}")
+    def get_question_by_id(self, question_id: int):
+        question = self.db.query(DBQuestion).filter(
             DBQuestion.question_id == question_id
         ).first()
 
@@ -75,12 +105,9 @@ class QuestionAPI:
 
         return question
 
-    def delete_question(
-        self,
-        question_id: int,
-        db: Session = Depends(get_db)
-    ):
-        question = db.query(DBQuestion).filter(
+    @router.delete("/{question_id}")
+    def delete_question(self, question_id: int):
+        question = self.db.query(DBQuestion).filter(
             DBQuestion.question_id == question_id
         ).first()
 
@@ -90,11 +117,7 @@ class QuestionAPI:
                 detail="Frage nicht gefunden"
             )
 
-        db.delete(question)
-        db.commit()
+        self.db.delete(question)
+        self.db.commit()
 
         return {"message": "Frage gelöscht"}
-
-
-question_api = QuestionAPI()
-router = question_api.router

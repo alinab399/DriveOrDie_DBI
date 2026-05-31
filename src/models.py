@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
 from sqlalchemy.dialects.mysql import VARCHAR
 from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
 
 from database import Base
 
@@ -51,6 +53,17 @@ class DBQuestion(Base):
 
     answers = relationship("DBAnswer", back_populates="question")
     user_questions = relationship("DBUserQuestion", back_populates="question")
+    action_steps = relationship("DBActionStep", back_populates="question", cascade="all, delete-orphan")
+
+class DBActionStep(Base):
+    __tablename__ = "action_steps"
+
+    actionstep_id = Column(Integer, primary_key=True, index=True)
+    question_id = Column(Integer,ForeignKey("question.question_id"))
+    text = Column(String)
+    correct_order = Column(Integer)
+
+    question = relationship("DBQuestion", back_populates="action_steps")
 
 
 class DBAnswer(Base):
