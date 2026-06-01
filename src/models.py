@@ -49,7 +49,7 @@ class DBQuestion(Base):
     question_id = Column(Integer, primary_key=True, index=True)
     question_text = Column(String, nullable=False)
     question_type = Column(String, nullable=False)
-    image_path = Column(String)
+    image_path = Column(String, nullable=True)
 
     answers = relationship("DBAnswer", back_populates="question")
     user_questions = relationship("DBUserQuestion", back_populates="question")

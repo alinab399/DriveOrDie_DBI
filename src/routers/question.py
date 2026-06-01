@@ -4,20 +4,20 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
 from database import get_db
-from models import DBQuestion, DBActionStep
+from models import DBQuestion, DBAnswer
 import random
 
 
-class ActionStepSchema(BaseModel):
-    text: str
-    correct_order: int
+class AnswerInQuestionSchema(BaseModel):
+    answer_text: str
+    is_correct: bool
 
 class QuestionSchema(BaseModel):
     question_text: str
-    question_type: str
+    question_type: str  # "THEORY" oder "CAR" / "SEQUENCE"
     image_path: str | None = None
+    answers: list[AnswerInQuestionSchema] = []
 
-    action_steps: list[ActionStepSchema] = []
 
 
 router = APIRouter(
@@ -44,26 +44,50 @@ class QuestionAPI:
                 detail="Keine Fragen vorhanden"
             )
 
+
+        # KI anfang
         question = random.choice(questions)
 
-        return {
-            "question_id": question.question_id,
-            "question_text": question.question_text,
-            "question_type": question.question_type,
-            "image_path": question.image_path,
-
-            "actions": [
+        if question.question_type == "theorie":
+            # Für Single Choice: Antworten mischen, damit nicht immer die richtige oben steht
+            formatted_answers = [
                 {
-                    "id": step.actionstep_id,
-                    "text": step.text,
-                    "correctOrder": step.correct_order
+                    "answer_id": ans.answer_id,
+                    "text": ans.answer_text,
+                    "is_correct": ans.is_correct
                 }
-                for step in sorted(
-                    question.action_steps,
-                    key=lambda x: x.correct_order
-                )
+                for ans in question.answers
             ]
-        }
+            random.shuffle(formatted_answers)  # Importiert aus random
+
+            return {
+                "question_id": question.question_id,
+                "question_text": question.question_text,
+                "question_type": question.question_type,
+                "image_path": question.image_path,
+                "answers": formatted_answers
+            }
+        elif question.question_type == "praxis":
+            # Für die Auto-Reihenfolge: Nach answer_id sortieren (Reihenfolge des Einfügens)
+            sorted_steps = sorted(question.answers, key=lambda x: x.answer_id)
+
+            return {
+                "question_id": question.question_id,
+                "question_text": question.question_text,
+                "question_type": question.question_type,
+                "image_path": question.image_path,
+                "actions": [
+                    {
+                        "id": ans.answer_id,
+                        "text": ans.answer_text,
+                        "correctOrder": idx + 1  # 1, 2, 3... basierend auf der ID-Sortierung
+                    }
+                    for idx, ans in enumerate(sorted_steps)
+                ]
+            }
+        # KI ende
+
+
 
     @router.post("/", status_code=201)
     def create_question(self, question: QuestionSchema):
@@ -78,12 +102,12 @@ class QuestionAPI:
         self.db.commit()
         self.db.refresh(new_question)
 
-        for step in question.action_steps:
+        for ans in question.answers:
             self.db.add(
-                DBActionStep(
+                DBAnswer(
                     question_id=new_question.question_id,
-                    text=step.text,
-                    correct_order=step.correct_order
+                    answer_text=ans.answer_text,
+                    is_correct=ans.is_correct
                 )
             )
 
