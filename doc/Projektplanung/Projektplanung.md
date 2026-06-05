@@ -155,8 +155,8 @@ DBI:
 | 03.06 – 07.06 | Leaderboard UI erstellen | Alina | Leaderboard sichtbar |
 | 03.06 – 07.06 | Adminbereich entwickeln | Franziska | Adminbereich fertig |
 | 03.06 – 07.06 | Benutzer löschen + Scores bearbeiten | Franziska | Adminfunktionen fertig |
-| 08.06 – 09.06 | Praxisfragen erweitern | Alina | Mehr Fragen |
-| 08.06 – 09.06 | Theoriefragen erweitern | Franziska | Mehr Fragen vorhanden |
+| 08.06 – 09.06 | Praxisfragen erweitern | Franziska | Mehr Fragen |
+| 08.06 – 09.06 | Theoriefragen erweitern | Alina | Mehr Fragen vorhanden |
 | 10.06 | Logging | Alina + Franziska | Tests |
 | 10.06 – 12.06 | UI verbessern und stylen | Alina + Franziska | Finales Design |
 | 11.06 – 12.06 | Fehlerbehebung | Franziska + Alina | Stabiler Build |
