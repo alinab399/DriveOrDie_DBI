@@ -48,25 +48,24 @@ class QuestionAPI:
         # KI anfang
         question = random.choice(questions)
 
+        response_data = {
+            "question_id": question.question_id,
+            "question_text": question.question_text,
+            "question_type": question.question_type,
+            "image_path": question.image_path,
+            "answers": [],
+            "actions": []
+        }
+
+        # Wenn es eine Theoriefrage ist, packen wir die Antworten dazu
         if question.question_type == "theorie":
-            # Für Single Choice: Antworten mischen, damit nicht immer die richtige oben steht
-            formatted_answers = [
+            response_data["answers"] = [
                 {
                     "answer_id": ans.answer_id,
                     "answer_text": ans.answer_text,
                     "is_correct": ans.is_correct
-                }
-                for ans in question.answers
+                } for ans in question.answers
             ]
-            random.shuffle(formatted_answers)  # Importiert aus random
-
-            return {
-                "question_id": question.question_id,
-                "question_text": question.question_text,
-                "question_type": question.question_type,
-                "image_path": question.image_path,
-                "answers": formatted_answers
-            }
         elif question.question_type == "praxis":
             # Für die Auto-Reihenfolge: Nach answer_id sortieren (Reihenfolge des Einfügens)
             sorted_steps = sorted(question.answers, key=lambda x: x.answer_id)
@@ -85,6 +84,8 @@ class QuestionAPI:
                     for idx, ans in enumerate(sorted_steps)
                 ]
             }
+        return response_data
+
         # KI ende
 
 
