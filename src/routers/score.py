@@ -43,15 +43,16 @@ class ScoreAPI:
         # Aggregiere die Punkte pro Benutzer und sortiere absteigend
         leaderboard = (
             self.db.query(
-                DBUser.username, func.sum(DBScore.points).label("total_points")
+                DBUser.user_id,
+                DBUser.username,
+                func.sum(DBScore.points).label("total_points")
             )
             .join(DBScore, DBUser.user_id == DBScore.user_id)
             .group_by(DBUser.user_id, DBUser.username)
             .order_by(func.sum(DBScore.points).desc())
             .all()
         )
-
         return [
-            {"username": item.username, "total_points": item.total_points}
+            {"user_id": item.user_id, "username": item.username, "total_points": item.total_points, }
             for item in leaderboard
         ]
