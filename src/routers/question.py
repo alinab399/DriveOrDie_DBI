@@ -53,7 +53,7 @@ class QuestionAPI:
             formatted_answers = [
                 {
                     "answer_id": ans.answer_id,
-                    "text": ans.answer_text,
+                    "answer_text": ans.answer_text,
                     "is_correct": ans.is_correct
                 }
                 for ans in question.answers

@@ -101,12 +101,12 @@ POS:
   
 DBI:
 - Logging DBI
-- Benutzer 
-- Theoriefragen
-- Praxisfragen
-- Antworten
-- Punkte
-- Leaderboard
+- Es können Benutzer erstellt werden und sich dann anmelden
+- Theoriefragen werden random aus der DB geladen
+- Praxisfragen werden random aus der DB geladen
+- Antworten werden mitgespeichert und in die Anwendung übergeben
+- Punkte werden den Benutzern zugeteilt nach richtig beantworteten fragen
+- Leaderboard für die Benutzer mit den meisten Punkten
   
 
 

@@ -1,9 +1,11 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
+from fastapi_restful.cbv import cbv
 
 from database import get_db
-from models import DBScore
+from models import DBScore, DBUser
 
 
 class ScoreSchema(BaseModel):
@@ -11,43 +13,55 @@ class ScoreSchema(BaseModel):
     user_id: int
 
 
+router = APIRouter(
+    prefix="/scores",
+    tags=["Scores"]
+)
+
+
+@cbv(router)
 class ScoreAPI:
-    def __init__(self):
-        self.router = APIRouter(
-            prefix="/scores",
-            tags=["Scores"]
-        )
+    db: Session = Depends(get_db)
 
-        self.register_routes()
+    @router.get("/")
+    def get_all_scores(self):
+        return self.db.query(DBScore).all()
 
-    def register_routes(self):
-        self.router.add_api_route(
-            "/", self.get_all_scores, methods=["GET"]
-        )
-
-        self.router.add_api_route(
-            "/", self.create_score, methods=["POST"]
-        )
-
-    def get_all_scores(self, db: Session = Depends(get_db)):
-        return db.query(DBScore).all()
-
-    def create_score(
-        self,
-        score: ScoreSchema,
-        db: Session = Depends(get_db)
-    ):
+    @router.post("/")
+    def create_score(self, score: ScoreSchema):
         new_score = DBScore(
             points=score.points,
             user_id=score.user_id
         )
 
-        db.add(new_score)
-        db.commit()
-        db.refresh(new_score)
+        self.db.add(new_score)
+        self.db.commit()
+        self.db.refresh(new_score)
 
         return new_score
 
+    @router.get("/leaderboard")
+    def get_leaderboard(self):
+        result = (
+            self.db.query(
+                DBUser.username.label("username"),
+                func.sum(DBScore.points).label("totalPoints")
+            )
+            .join(
+                DBScore,
+                DBUser.user_id == DBScore.user_id
+            )
+            .group_by(DBUser.user_id)
+            .order_by(
+                func.sum(DBScore.points).desc()
+            )
+            .all()
+        )
 
-score_api = ScoreAPI()
-router = score_api.router
+        return [
+            {
+                "username": row.username,
+                "totalPoints": row.totalPoints
+            }
+            for row in result
+        ]
