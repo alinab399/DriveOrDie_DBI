@@ -5,7 +5,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from models import DBUser, DBScore
+
 from database import get_db
 from models import DBUser, DBScore
 
@@ -20,6 +20,7 @@ class UserSchema(BaseModel):
 class LoginSchema(BaseModel):
     username: str
     password: str
+
 
 class PointsSchema(BaseModel):
     points: int
@@ -43,10 +44,20 @@ class UserAPI:
                 DBUser.user_id,
                 DBUser.username,
                 DBUser.is_admin,
-                func.coalesce(func.sum(DBScore.points), 0).label("score")
+                func.coalesce(
+                    func.sum(DBScore.points),
+                    0
+                ).label("score")
             )
-            .outerjoin(DBScore, DBUser.user_id == DBScore.user_id)
-            .group_by(DBUser.user_id)
+            .outerjoin(
+                DBScore,
+                DBUser.user_id == DBScore.user_id
+            )
+            .group_by(
+                DBUser.user_id,
+                DBUser.username,
+                DBUser.is_admin
+            )
             .all()
         )
 
@@ -68,12 +79,6 @@ class UserAPI:
     @router.post("/", response_model=UserSchema, status_code=201)
     def create_user(self, user: UserSchema):
 
-        if user.username.lower() == "admin":
-            raise HTTPException(
-                status_code=403,
-                detail="Admin darf nicht registriert werden"
-            )
-
         existing_user = self.db.query(DBUser).filter(
             DBUser.username == user.username
         ).first()
@@ -86,8 +91,10 @@ class UserAPI:
 
         new_user = DBUser(
             username=user.username,
-            password=user.password
+            password=user.password,
+            is_admin=user.is_admin
         )
+
 
         self.db.add(new_user)
         self.db.commit()
@@ -123,6 +130,10 @@ class UserAPI:
                 detail="User nicht gefunden"
             )
 
+        self.db.query(DBScore).filter(
+            DBScore.user_id == user_id
+        ).delete()
+
         self.db.delete(user)
         self.db.commit()
 
@@ -132,9 +143,9 @@ class UserAPI:
 
     @router.put("/{user_id}/points")
     def update_points(
-            self,
-            user_id: int,
-            data: PointsSchema
+        self,
+        user_id: int,
+        data: PointsSchema
     ):
         user = self.db.query(DBUser).filter(
             DBUser.user_id == user_id
@@ -146,12 +157,10 @@ class UserAPI:
                 detail="User nicht gefunden"
             )
 
-        # Alle bisherigen Scores löschen
         self.db.query(DBScore).filter(
             DBScore.user_id == user_id
         ).delete()
 
-        # Neuen Score anlegen
         new_score = DBScore(
             points=data.points,
             user_id=user_id
@@ -166,17 +175,6 @@ class UserAPI:
 
     @router.post("/login")
     def login_user(self, login: LoginSchema):
-
-        if (
-            login.username == "admin"
-            and login.password == "admin123"
-        ):
-            return {
-                "message": "Login erfolgreich",
-                "user_id": -1,
-                "username": "admin",
-                "is_admin": True
-            }
 
         user = self.db.query(DBUser).filter(
             DBUser.username == login.username,
@@ -193,5 +191,5 @@ class UserAPI:
             "message": "Login erfolgreich",
             "user_id": user.user_id,
             "username": user.username,
-            "is_admin": False
+            "is_admin": user.is_admin
         }
