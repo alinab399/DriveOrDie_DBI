@@ -11,7 +11,7 @@ GitHub-Links:
 ## Projektbeschreibung
 Wir entwickeln ein Lernspiel für Fahrschüler mit WPF, FastAPI und einer Datenbank.
 
-Im Spiel werden abwechselnd Bilder von Verkehrssituationen angezeigt und Theoriefragen gestellt. Der Benutzer muss bei den Verkehrsituationen die richtigen Schritte in der richtigen Reihenfolge auswählen, zum Beispiel:
+Im Spiel werden abwechselnd Bilder von Verkehrssituationen angezeigt und Theoriefragen gestellt. Der Benutzer muss bei den Verkehrssituationen die richtigen Schritte in der richtigen Reihenfolge auswählen, zum Beispiel:
 
 - Blinker setzen
 - Spiegel schauen
@@ -22,7 +22,7 @@ Die Theoriefragen sind Single-Choice und es muss die richtige Antwort ausgewähl
 Das Programm überprüft die Antwort und vergibt Punkte bei richtigen Antworten. Bei falschen Antworten "stirbt" man und kann erneut starten.
 
 Benutzer können sich registrieren und einloggen. 
-Es gibt einen Admin der die Benutzer löschen und den Punktestand bearbeiten kann.
+Es gibt einen Admin, der die Benutzer löschen und den Punktestand bearbeiten kann.
 Zusätzlich gibt es ein Leaderboard mit den besten Spielern. Die Fragen und Bilder werden zufällig aus der Datenbank geladen.
 
 
@@ -38,91 +38,93 @@ Das System verwaltet:
 - Leaderboard
 - Logging
 
-
+<div style="page-break-after: always;"></div>
 
 ## GUI Scribbles
-![alt text](Main_Login_RobotTest.jpeg)
-![alt text](Home_Car_Question.jpeg)
-![alt text](Tod_Info_Info2.jpeg)
-![alt text](Home2.jpeg)
+<img src="Main_Login_RobotTest.jpeg" alt="Main Login Robot Test" width="40%" />
+
+<img src="Home_Car_Question.jpeg" alt="Home Car Question" width="50%" />
+
+<img src="Tod_Info_Info2.jpeg" alt="Tod Info Info 2" width="40%" />
+
+<img src="Home2.jpeg" alt="Home 2" width="50%" />
 
 
-
+<div style="page-break-after: always;"></div>
 
 ## UML Diagramm
 ![alt text](UML.png)
 
+<div style="page-break-after: always;"></div>
 
 ## ERM Diagramm
 ![alt text](ERM.png)
 
+<div style="page-break-after: always;"></div>
+
 ## RM Diagramm
 ![alt text](RM.png)
 
+<div style="page-break-after: always;"></div>
 
+## Normalformen
 **1NF**
 - Alle Tabellen besitzen:
-  - eindeutige Primärschlüssel
-  - atomare Werte
-  - keine mehrfachen Werte in einer Spalte
-
-Erfüllt.
-
+  - [x] eindeutige Primärschlüssel
+  - [x] atomare Werte
+  - [x] keine mehrfachen Werte in einer Spalte
 
 
 **2NF**
-- Alle Nicht-Schlüsselattribute hängen vollständig vom Primärschlüssel ab.
-- Keine Teilabhängigkeiten vorhanden.
-
-Erfüllt.
+- [x] Alle Nicht-Schlüsselattribute hängen vollständig vom Primärschlüssel ab.
+- [x] Keine Teilabhängigkeiten vorhanden.
 
 
 **3NF**
-- Keine transitiven Abhängigkeiten vorhanden.
+- [x] Keine transitiven Abhängigkeiten vorhanden.
 
-- Daten sind logisch getrennt:
+- [x] Daten sind logisch getrennt:
   - Benutzer
   - Fragen
   - Antworten
   - Logging
   - Scores
 
-Erfüllt.
+<div style="page-break-after: always;"></div>
 
-### Must-Haves
-POS:
-- Main-Page
-- Login
-- Registrieren
-- Home mit Leaderboard
-- Praxisübungen(Car)
-- Theorieübungen(Question)
-- Logging POS
+## Must-Haves
+### POS:
+- [x] Main-Page
+- [x] Login
+- [x] Registrieren
+- [x] Home mit Leaderboard
+- [x] Praxisübungen(Car)
+- [x] Theorieübungen(Question)
+- [x] Logging POS
   
-DBI:
-- Logging DBI
-- Es können Benutzer erstellt werden und sich dann anmelden
-- Theoriefragen werden random aus der DB geladen
-- Praxisfragen werden random aus der DB geladen
-- Antworten werden mitgespeichert und in die Anwendung übergeben
-- Punkte werden den Benutzern zugeteilt nach richtig beantworteten fragen
-- Leaderboard für die Benutzer mit den meisten Punkten
+### DBI:
+- [x] Logging DBI
+- [x] Benutzer (Es können Benutzer erstellt werden und sich dann anmelden)
+- [x] Theoriefragen (werden random aus der DB geladen)
+- [x] Praxisfragen (werden random aus der DB geladen)
+- [x] Antworten (werden mitgespeichert und in die Anwendung übergeben)
+- [x] Punkte (werden den Benutzern zugeteilt nach richtig beantworteten Fragen)
+- [x] Leaderboard (für die Benutzer mit den meisten Punkten)
   
 
 
-### Nice-To-Haves
-POS:
-- Robot-Test
-- Info_Pages
-- Todesseite
-- anbindung an google maps
+## Nice-To-Haves
+### POS:
+- [x] Robot-Test
+- [x] Info_Pages
+- [x] Todesseite
+- [ ] Anbindung an Google Maps
 
-DBI:
-- Suche im Leaderboard nach Namen
-- Limit Leaderboard erste 10 Plätze
-- Limit user tabelle für admin
+### DBI:
+- [x] Suche im Leaderboard nach Namen
+- [x] Limit Leaderboard erste 10 Plätze
 
-
+<div style="page-break-after: always;"></div>
 
 ## Zeitplan
 
@@ -138,10 +140,10 @@ DBI:
 | 24.05 – 29.05 |  Praxisfragen erstellen | Franziska | Praxis fertig |
 | 24.05 – 29.05 | Theoriefragen aus Datenbank laden | Alina | Theoriefragen dynamisch |
 | 24.05 – 29.05 | Praxisfragen aus Datenbank laden | Franziska | Praxisfragen dynamisch |
-|30.05 | Demo für Zwischenpräsentation fertigstellen | Franziska + Alina | Zwischenpräsentation bereit |
+| 30.05 | Demo für Zwischenpräsentation fertigstellen | Franziska + Alina | Zwischenpräsentation bereit |
 | 31.05 | Funktionierende Zwischenpräsentation | Franziska + Alina | Zwischenpräsentation |
 
-
+<div style="page-break-after: always;"></div>
 
 ## Nach der Zwischenpräsentation
 
@@ -149,8 +151,8 @@ DBI:
 |---|---|---|---|
 | 31.05 – 02.06 | Punkte-System implementieren | Alina | Punkte werden gespeichert |
 | 31.05 – 02.06 | Todesseite entwickeln | Franziska | Death-System fertig |
-| 31.05 - 02.06 | Robot-Test implementieren | Franziska | Nice-To-Have fertig |
-|  31.05 - 02.06  | Info-Pages erstellen | Alina | Zusatzseiten fertig |
+| 31.05 – 02.06 | Robot-Test implementieren | Franziska | Nice-To-Have fertig |
+| 31.05 – 02.06 | Info-Pages erstellen | Alina | Zusatzseiten fertig |
 | 03.06 – 07.06 | Leaderboard Backend entwickeln | Alina | Leaderboard funktioniert |
 | 03.06 – 07.06 | Leaderboard UI erstellen | Alina | Leaderboard sichtbar |
 | 03.06 – 07.06 | Adminbereich entwickeln | Franziska | Adminbereich fertig |
@@ -160,11 +162,12 @@ DBI:
 | 10.06 | Logging | Alina + Franziska | Tests |
 | 10.06 – 12.06 | UI verbessern und stylen | Alina + Franziska | Finales Design |
 | 11.06 – 12.06 | Fehlerbehebung | Franziska + Alina | Stabiler Build |
-| 13.06 | Präsentation vorbereiten und testen | Franziska + Alina | Endpräsentation bereit |
-| 14.06 | Endpräsentation | Franziska + Alina | Projektabschluss |
+| 15.06 | Präsentation vorbereiten und testen | Franziska + Alina | Endpräsentation bereit |
+| 17.06 | Endpräsentation | Franziska + Alina | Projektabschluss |
 
+<div style="page-break-after: always;"></div>
 
-# Milestones
+## Milestones
 
 | Datum | Milestone |
 |---|---|
@@ -174,5 +177,22 @@ DBI:
 | 07.06 | Leaderboard und Punkte-System fertig |
 | 07.06 | Adminbereich fertig |
 | 12.06 | Hauptfunktionen vollständig |
-| 14.06 | Dokumentation abgeschlossen |
-| 14.06 | Endpräsentation |
+| 15.06 | Dokumentation abgeschlossen |
+| 17.06 | Endpräsentation |
+
+<div style="page-break-after: always;"></div>
+
+## KI im POS-Teil
+
+Wir haben hauptsächlich das GUI Design und das Leaderboard von Claude Code und ChatGPT erstellen lassen, um zeitlich mit unserem Projekt fertig zu werden.
+Auch bei der Fehlersuche hat KI uns geholfen.
+
+Verwendete AI Tools:
+- Claude Code
+- ChatGPT
+
+Reflexion:
+Es ist nicht so leicht wie man vielleicht denkt, KI dazu zu bringen, genau das zu erstellen was man braucht und dass es in den Code passt. 
+Man muss genau beschreiben, gut prompten und es erfordert in den meisten Fällen Geduld, bis das Ergebnis zufriedenstellend ist.
+Das Design mit KI-Hilfe zu erstellen hat sehr gut funktioniert, nachdem man genau gepromptet hat, was man für ein Design möchte.
+Fehlersuche war um einiges schwerer. Wir mussten der KI genau erklären was nicht funktioniert, unser Verdacht wo der Fehler lag und den entsprechenden Code der KI zur Verfügung stellen. Was wiederum mehr Zeit in Anspruch genommen hat.

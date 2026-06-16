@@ -50,6 +50,7 @@ class ScoreAPI:
             .join(DBScore, DBUser.user_id == DBScore.user_id)
             .group_by(DBUser.user_id, DBUser.username)
             .order_by(func.sum(DBScore.points).desc())
+            .limit(10)
             .all()
         )
         return [
