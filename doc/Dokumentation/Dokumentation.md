@@ -101,6 +101,7 @@ Das System verwaltet:
 - [x] Praxisübungen(Car)
 - [x] Theorieübungen(Question)
 - [x] Logging POS
+- [x] UniTests
   
 ### DBI:
 - [x] Logging DBI
