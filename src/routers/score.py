@@ -5,7 +5,6 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from database import get_db
-# Wichtig: DBUser muss importiert werden, da du es im Leaderboard benutzt!
 from models import DBScore, DBUser
 
 
@@ -14,14 +13,11 @@ class ScoreSchema(BaseModel):
     user_id: int
 
 
-# 1. Router zuerst definieren
 router = APIRouter(prefix="/scores", tags=["Scores"])
 
 
-# 2. Die Klasse mit dem @cbv Decorator versehen
 @cbv(router)
 class ScoreAPI:
-    # Damit steht `self.db` in JEDER Methode automatisch zur Verfügung
     db: Session = Depends(get_db)
 
     @router.get("/")
@@ -40,7 +36,6 @@ class ScoreAPI:
 
     @router.get("/leaderboard", response_model=list[dict])
     def get_leaderboard(self):
-        # Aggregiere die Punkte pro Benutzer und sortiere absteigend
         leaderboard = (
             self.db.query(
                 DBUser.user_id,
