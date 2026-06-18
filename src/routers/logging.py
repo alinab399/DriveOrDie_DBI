@@ -24,10 +24,12 @@ router = APIRouter(
 class LoggingAPI:
     db: Session = Depends(get_db)
 
+    # Alle Logging Einträge bekommen
     @router.get("/")
     def get_all_logs(self):
         return self.db.query(DBLogging).all()
 
+    # Einen Log Eintrag erstellen
     @router.post("/")
     def create_log(self, log: LoggingSchema):
         new_log = DBLogging(

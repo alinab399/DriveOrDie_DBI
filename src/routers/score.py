@@ -20,10 +20,12 @@ router = APIRouter(prefix="/scores", tags=["Scores"])
 class ScoreAPI:
     db: Session = Depends(get_db)
 
+    # Alle Punkte bekommen
     @router.get("/")
     def get_all_scores(self):
         return self.db.query(DBScore).all()
 
+    # Einen Punktestand für einen User erstellen
     @router.post("/")
     def create_score(self, score: ScoreSchema):
         new_score = DBScore(points=score.points, user_id=score.user_id)
@@ -34,6 +36,7 @@ class ScoreAPI:
 
         return new_score
 
+    # Alle Daten für das Leaderboard bekommen
     @router.get("/leaderboard", response_model=list[dict])
     def get_leaderboard(self):
         leaderboard = (

@@ -36,6 +36,7 @@ router = APIRouter(
 class UserAPI:
     db: Session = Depends(get_db)
 
+    # Admin bekommt alle User mit Score schon im richtigen Format
     @router.get("/all")
     def get_all_users_admin(self):
 
@@ -72,10 +73,12 @@ class UserAPI:
             for row in result
         ]
 
+    # Alle User werden zurückgegeben
     @router.get("/", response_model=list[UserSchema])
     def get_all_users(self):
         return self.db.query(DBUser).all()
 
+    # Einen User erstellen (Registrieren)
     @router.post("/", response_model=UserSchema, status_code=201)
     def create_user(self, user: UserSchema):
 
@@ -102,6 +105,7 @@ class UserAPI:
 
         return new_user
 
+    # Einen User per ID bekommen
     @router.get("/{user_id}", response_model=UserSchema)
     def get_user_by_id(self, user_id: int):
 
@@ -117,6 +121,7 @@ class UserAPI:
 
         return user
 
+    # Einen User löschen
     @router.delete("/{user_id}")
     def delete_user(self, user_id: int):
 
@@ -141,6 +146,7 @@ class UserAPI:
             "message": "User gelöscht"
         }
 
+    # Den Punktestand eines Users aktualisieren
     @router.put("/{user_id}/points")
     def update_points(
         self,
@@ -173,6 +179,7 @@ class UserAPI:
             "message": "Punkte geändert"
         }
 
+    # Einen User einloggen und auf Fehler prüfen
     @router.post("/login")
     def login_user(self, login: LoginSchema):
 

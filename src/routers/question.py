@@ -37,10 +37,12 @@ router = APIRouter(
 class QuestionAPI:
     db: Session = Depends(get_db)
 
+    # Alle Fragen (Theorie & Praxis) werden zurückgegeben
     @router.get("/")
     def get_all_questions(self):
         return self.db.query(DBQuestion).all()
 
+    # Eine zufällige Frage bekommen
     @router.get("/random")
     def get_random_question(self):
         questions = self.db.query(DBQuestion).all()
@@ -98,7 +100,7 @@ class QuestionAPI:
         # KI ende
 
 
-
+    # Eine Frage mit Antwortmöglichkeiten erstellen
     @router.post("/", status_code=201)
     def create_question(self, question: QuestionSchema):
 
@@ -134,6 +136,7 @@ class QuestionAPI:
 
         return new_question
 
+    # Eine bestimmte Frage bekommen
     @router.get("/{question_id}")
     def get_question_by_id(self, question_id: int):
         question = self.db.query(DBQuestion).filter(
@@ -148,6 +151,7 @@ class QuestionAPI:
 
         return question
 
+    # Eine bestimmte Frage löschen
     @router.delete("/{question_id}")
     def delete_question(self, question_id: int):
         question = self.db.query(DBQuestion).filter(

@@ -23,10 +23,12 @@ router = APIRouter(
 class AnswerAPI:
     db: Session = Depends(get_db)
 
+    # Es werden alle Antworten zurückgegeben
     @router.get("/")
     def get_all_answers(self):
         return self.db.query(DBAnswer).all()
 
+    # Eine Antwort erstellen und in die DB speichern
     @router.post("/")
     def create_answer(self, answer: AnswerSchema):
         new_answer = DBAnswer(
