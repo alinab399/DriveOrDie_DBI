@@ -1,11 +1,9 @@
-from typing import List
-
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi_restful.cbv import cbv
+from pydantic import BaseModel
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
-
+import bcrypt
 from database import get_db
 from models import DBUser, DBScore
 
@@ -89,9 +87,14 @@ class UserAPI:
                 detail="User existiert schon"
             )
 
+        hashed_password = bcrypt.hashpw(
+            user.password.encode("utf-8"),
+            bcrypt.gensalt()
+        ).decode("utf-8")
+
         new_user = DBUser(
             username=user.username,
-            password=user.password,
+            password=hashed_password,
             is_admin=user.is_admin
         )
 
@@ -177,9 +180,25 @@ class UserAPI:
     def login_user(self, login: LoginSchema):
 
         user = self.db.query(DBUser).filter(
-            DBUser.username == login.username,
-            DBUser.password == login.password
+            DBUser.username == login.username
         ).first()
+
+        if not user:
+            raise HTTPException(
+                status_code=401,
+                detail="Benutzername oder Passwort falsch"
+            )
+
+
+
+        if not bcrypt.checkpw(
+                login.password.encode("utf-8"),
+                user.password.encode("utf-8")
+        ):
+            raise HTTPException(
+                status_code=401,
+                detail="Benutzername oder Passwort falsch"
+            )
 
         if not user:
             raise HTTPException(

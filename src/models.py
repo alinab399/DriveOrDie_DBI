@@ -12,7 +12,7 @@ class DBUser(Base):
 
     user_id = Column(Integer, primary_key=True, index=True)
     username = Column(VARCHAR(50), nullable=False, unique=True)
-    password = Column(VARCHAR(15), nullable=False)
+    password = Column(VARCHAR(100), nullable=False)
     is_admin = Column(Boolean, default=False)
 
     scores = relationship("DBScore", back_populates="user")
