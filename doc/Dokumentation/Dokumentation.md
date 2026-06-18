@@ -25,7 +25,6 @@ Benutzer können sich registrieren und einloggen.
 Es gibt einen Admin, der die Benutzer löschen und den Punktestand bearbeiten kann.
 Zusätzlich gibt es ein Leaderboard mit den besten Spielern. Die Fragen und Bilder werden zufällig aus der Datenbank geladen.
 
-
 **DBI:**
 Domäne: Fahrschule / Verkehrsbildung
 
@@ -37,6 +36,23 @@ Das System verwaltet:
 - Punkte
 - Leaderboard
 - Logging
+
+<div style="page-break-after: always;"></div>
+
+### Software-Voraussetzungen
+
+**Für den POS-Teil (Frontend):**
+- **Visual Studio:** Das brauchen wir, um die WPF-Oberfläche anzuzeigen, den C#-Code zu schreiben und das Programm zu starten.
+- **.NET 10.0:** Das ist das Framework im Hintergrund, auf dem unser Spiel aufbaut.
+
+**Für den DBI-Teil (Backend & Datenbank):**
+- **Python (Version 3.10 oder neuer):** Die Programmiersprache für unser gesamtes Backend.
+- **FastAPI & Uvicorn:** Das nutzen wir, um die API-Schnittstelle (die Verbindung zum Frontend) lokal als Server laufen zu lassen.
+- **SQLAlchemy:** Das ist unser Tool, mit dem der Python-Code ganz einfach mit der Datenbank redet.
+- **SQLite:** Unsere gewählte Datenbank. Das Praktische hier ist, dass sie dateibasiert ist – man braucht also keinen extra Datenbank-Server installieren, da die DB direkt als Datei im Projekt liegt.
+- **PyCharm oder VS Code:** Als Code-Editor, um den Backend-Code zu bearbeiten und die API zu starten.
+
+
 
 <div style="page-break-after: always;"></div>
 
@@ -197,3 +213,11 @@ Es ist nicht so leicht wie man vielleicht denkt, KI dazu zu bringen, genau das z
 Man muss genau beschreiben, gut prompten und es erfordert in den meisten Fällen Geduld, bis das Ergebnis zufriedenstellend ist.
 Das Design mit KI-Hilfe zu erstellen hat sehr gut funktioniert, nachdem man genau gepromptet hat, was man für ein Design möchte.
 Fehlersuche war um einiges schwerer. Wir mussten der KI genau erklären was nicht funktioniert, unser Verdacht wo der Fehler lag und den entsprechenden Code der KI zur Verfügung stellen. Was wiederum mehr Zeit in Anspruch genommen hat.
+
+## Probleme und Lösungen
+
+| Problem | Ursache | Lösung |
+| :--- | :--- | :--- |
+| **Git-Merge-Konflikte** | Paralleles Arbeiten im Team an denselben Frontend- und Backend-Dateien. | regelmäßige Absprachen vor Push/Pull |
+| **Bilder** | Programm ist abgestürtzt weil die Bilder von den Straßen nicht angezeigt werden konnten. | Bildvorgang muss auf Ressource umgestellt werden damit das Bild richtig geladen werden kann. |
+| **Theorie** | Als wir die Theoriefragen zu den Praxisbeispielen implementiert haben, wurden die Daten nicht richtig aus der DB geladen und es stürzte ab. Unser Frontend hat eine andere Reihenfolge der Parameter erwartet als übergeben. | JSON mitteilen an welcher Stelle der geforderte Parameter steht damit JSON es finden kann. |
