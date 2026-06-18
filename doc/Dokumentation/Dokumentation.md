@@ -143,7 +143,7 @@ Das System verwaltet:
 
 <div style="page-break-after: always;"></div>
 
-## Zeitplan
+## Einteilung & Tagebuch
 
 | Zeitraum | Aufgabe | Zuständig | Milestone |
 |---|---|---|---|
@@ -162,7 +162,7 @@ Das System verwaltet:
 
 <div style="page-break-after: always;"></div>
 
-## Nach der Zwischenpräsentation
+### Nach der Zwischenpräsentation
 
 | Zeitraum | Aufgabe | Zuständig | Milestone |
 |---|---|---|---|
